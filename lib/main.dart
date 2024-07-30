@@ -93,10 +93,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _saveImage(Uint8List tempFile) async {
     try {
-      final permission = Permission.storage;
+      const permission = Permission.manageExternalStorage;
       if (!(await permission.isGranted)) {
-        Permission.storage.request();
-        return;
+        final status = await Permission.manageExternalStorage.request();
+        if (!status.isGranted) {
+          return;
+        }
       }
 
       final file = File("/storage/emulated/0/Download/testing1.pdf");
